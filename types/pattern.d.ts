@@ -1,0 +1,10 @@
+import { Pattern } from './type';
+export declare const highlight: Pattern;
+export declare const image: Pattern;
+export declare const email: Pattern;
+export declare const url: Pattern;
+export declare const tel: Pattern;
+export declare function testPattern(str: string, pattern: Pattern): boolean;
+export declare const patternList: Pattern[];
+export declare const patternMap: Record<string, Pattern>;
+export declare function addPattern(pattern: Pattern): void;
