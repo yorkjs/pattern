@@ -1,5 +1,5 @@
 /**
- * pattern.js v0.0.1
+ * pattern.js v0.0.2
  * (c) 2021-2023 musicode
  * Released under the MIT License.
  */
@@ -77,6 +77,10 @@
                   return email.parse(emailMatch);
               }
           }
+          // 类似这种数字 62.2，不应该识别为 url
+          if (/^(\d+)?\.\d+$/.test(urlStr)) {
+              return;
+          }
           return createToken(match, url, {
               url: normalizeUrl(urlStr),
           });
@@ -98,7 +102,10 @@
   function testPattern(str, pattern) {
       var match = str.match(pattern.pattern);
       if (match) {
-          return pattern.parse(match).type === pattern.type;
+          var result = pattern.parse(match);
+          if (result) {
+              return result.type === pattern.type;
+          }
       }
       return false;
   }
@@ -139,22 +146,34 @@
                   }
               }
           });
-          if (bestResult && bestPattern) {
-              if (bestResult.index > 0) {
-                  result.push({
-                      type: 'text',
-                      text: text.substring(0, bestResult.index),
-                  });
+          var appendText = function (text) {
+              var prevItem = result[result.length - 1];
+              if (prevItem && prevItem.type === 'text') {
+                  prevItem.text += text;
               }
-              result.push(bestPattern.parse(bestResult));
-              text = text.substring(bestResult.index + bestResult[0].length);
-          }
-          else {
-              if (text.length) {
+              else {
                   result.push({
                       type: 'text',
                       text: text,
                   });
+              }
+          };
+          if (bestResult && bestPattern) {
+              if (bestResult.index > 0) {
+                  appendText(text.substring(0, bestResult.index));
+              }
+              var item = bestPattern.parse(bestResult);
+              if (item) {
+                  result.push(item);
+              }
+              else {
+                  appendText(bestResult[0]);
+              }
+              text = text.substring(bestResult.index + bestResult[0].length);
+          }
+          else {
+              if (text.length) {
+                  appendText(text);
               }
               return 'break';
           }

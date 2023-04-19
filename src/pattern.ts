@@ -60,6 +60,10 @@ export const url: Pattern = {
         return email.parse(emailMatch)
       }
     }
+    // 类似这种数字 62.2，不应该识别为 url
+    if (/^(\d+)?\.\d+$/.test(urlStr)) {
+      return
+    }
     return createToken(
       match,
       url,
@@ -90,7 +94,10 @@ export const tel: Pattern = {
 export function testPattern(str: string, pattern: Pattern) {
   const match = str.match(pattern.pattern)
   if (match) {
-    return pattern.parse(match).type === pattern.type
+    const result = pattern.parse(match)
+    if (result) {
+      return result.type === pattern.type
+    }
   }
   return false
 }

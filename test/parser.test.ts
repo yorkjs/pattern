@@ -3,7 +3,7 @@ import { parseText, testPattern, patternMap } from '../src/index'
 test('parseText', () => {
 
   let result = parseText(
-    '我的电话是13612345678，邮箱是 1234234@qq.com ，网址是https://baidu.com，今天是<strong>星期天</strong>，头像是<img src="https://baidu.com/avatar.png"/>，全身照是<img id="id" alt="123"/>,谢谢'
+    '今天温度是10.3，我的电话是13612345678，邮箱是 1234234@qq.com ，网址是https://baidu.com，今天是<strong>星期天</strong>，头像是<img src="https://baidu.com/avatar.png"/>，全身照是<img id="id" alt="123"/>,谢谢'
   )
 
   expect(result[0].type).toBe('text')
@@ -82,6 +82,10 @@ test('parseText', () => {
 
 test('testPattern', () => {
 
+  expect(testPattern('62.2', patternMap.url)).toBe(false)
+  expect(testPattern('.2', patternMap.url)).toBe(false)
+  expect(testPattern('62.2', patternMap.tel)).toBe(false)
+  expect(testPattern('.2', patternMap.tel)).toBe(false)
   expect(testPattern('alibaba-lnc@asddj.com', patternMap.email)).toBe(true)
   expect(testPattern('alibaba-lnc@asddj-abc.com.cn', patternMap.email)).toBe(true)
   expect(testPattern('asdas-@hotmail.com', patternMap.email)).toBe(true)

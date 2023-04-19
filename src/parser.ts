@@ -22,30 +22,44 @@ export function parseText(text: string, patterns: Pattern[] = patternList): Toke
         }
       }
     })
-    if (bestResult && bestPattern) {
-
-      if (bestResult.index > 0) {
+    const appendText = function (text: string) {
+      const prevItem = result[result.length - 1]
+      if (prevItem && prevItem.type === 'text') {
+        prevItem.text += text
+      }
+      else {
         result.push(
           {
             type: 'text',
-            text: text.substring(0, bestResult.index),
+            text: text,
           }
         )
       }
+    }
+    if (bestResult && bestPattern) {
 
-      result.push(
-        bestPattern.parse(bestResult)
-      )
+      if (bestResult.index > 0) {
+        appendText(
+          text.substring(0, bestResult.index)
+        )
+      }
+
+      const item = bestPattern.parse(bestResult)
+      if (item) {
+        result.push(item)
+      }
+      else {
+        appendText(
+          bestResult[0]
+        )
+      }
 
       text = text.substring(bestResult.index + bestResult[0].length)
     }
     else {
       if (text.length) {
-        result.push(
-          {
-            type: 'text',
-            text,
-          }
+        appendText(
+          text
         )
       }
       break
