@@ -83,8 +83,9 @@ test('parseText', () => {
 test('testPattern', () => {
 
   expect(testPattern('62.2', patternMap.url)).toBe(false)
+  expect(testPattern('62.2%', patternMap.url)).toBe(false)
   expect(testPattern('.2', patternMap.url)).toBe(false)
-  expect(testPattern('62.2', patternMap.tel)).toBe(false)
+  expect(testPattern('62.2%', patternMap.tel)).toBe(false)
   expect(testPattern('.2', patternMap.tel)).toBe(false)
   expect(testPattern('alibaba-lnc@asddj.com', patternMap.email)).toBe(true)
   expect(testPattern('alibaba-lnc@asddj-abc.com.cn', patternMap.email)).toBe(true)

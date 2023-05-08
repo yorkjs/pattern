@@ -60,8 +60,8 @@ export const url: Pattern = {
         return email.parse(emailMatch)
       }
     }
-    // 类似这种数字 62.2，不应该识别为 url
-    if (/^(\d+)?\.\d+$/.test(urlStr)) {
+    // 类似这种数字 62.2、3.5%，不应该识别为 url
+    if (/^(\d+)?\.\d+/.test(urlStr)) {
       return
     }
     return createToken(

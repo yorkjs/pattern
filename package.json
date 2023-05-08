@@ -1,6 +1,6 @@
 {
   "name": "@yorkjs/pattern",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "pattern",
   "main": "dist/pattern.js",
   "module": "dist/pattern.esm.js",

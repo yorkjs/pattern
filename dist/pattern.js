@@ -1,5 +1,5 @@
 /**
- * pattern.js v0.0.2
+ * pattern.js v0.0.3
  * (c) 2021-2023 musicode
  * Released under the MIT License.
  */
@@ -77,8 +77,8 @@
                   return email.parse(emailMatch);
               }
           }
-          // 类似这种数字 62.2，不应该识别为 url
-          if (/^(\d+)?\.\d+$/.test(urlStr)) {
+          // 类似这种数字 62.2、3.5%，不应该识别为 url
+          if (/^(\d+)?\.\d+/.test(urlStr)) {
               return;
           }
           return createToken(match, url, {
